@@ -7,33 +7,48 @@ const honeyUserObject= JSON.parse(localHoneyUser)
 export const TicketList = () => {
     const [tickets, setTickets] = useState([])
     const [filteredTickets, setFilteredTickets] = useState([])
+    const [emergency, setEmergency] = useState(false)
 
-    useEffect(
+    useEffect( //filter tickets by emergencies
         () => {
-            console.log("Initial state of tickets", tickets) // View the initial state of tickets
+            if (emergency) {
+                const emergencyTickets = tickets.filter(ticket => ticket.emergency === true)
+                setFilteredTickets(emergencyTickets)
+            }
+            else {
+                setFilteredTickets(tickets)
+            }
+        }, [emergency])
+
+    useEffect( //fetch data from json-server
+        () => {
             fetch(`http://localhost:8088/serviceTickets`)
                 .then(response => response.json())
                 .then((ticketArray) => setTickets(ticketArray))
-        },
-        [] // When this array is empty, you are observing initial component state
-    )
+        }, []) // When this array is empty, you are observing initial component state
 
-    useEffect(
+    useEffect( //check if user is employee & filter tickets for given user
         () => {
             if (honeyUserObject.staff) {
-                //for employees, see all tickets
+                //for employees to see all tickets
                 setFilteredTickets(tickets)
             }
             else {
-                //for customers
+                //for customers to see only their tickets
                 const userTickets = tickets.filter(ticket => ticket.userId === honeyUserObject.id)
                 setFilteredTickets(userTickets)
             }
-        },
-        [tickets]
-    )
+        }, [tickets])
     
     return <>
+        {
+            honeyUserObject.staff ?
+            <>
+                <button onClick={() => setEmergency(true)}>Emergencies Only</button>
+                <button onClick={() => setEmergency(false)}>All tickets</button>
+            </>
+                : ""
+        }
         <h2>List of Tickets</h2>
         <article className="tickets">
             {
