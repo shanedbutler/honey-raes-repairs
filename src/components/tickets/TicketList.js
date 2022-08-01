@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "./Tickets.css"
 
-const localHoneyUser = localStorage.getItem("honey_user")
-const honeyUserObject= JSON.parse(localHoneyUser)
-
 export const TicketList = () => {
+
+    const localHoneyUser = localStorage.getItem("honey_user")
+    const honeyUserObject= JSON.parse(localHoneyUser)
 
     const navigate = useNavigate()
 
