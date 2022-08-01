@@ -12,6 +12,7 @@ export const TicketList = () => {
     const [tickets, setTickets] = useState([])
     const [filteredTickets, setFilteredTickets] = useState([])
     const [emergency, setEmergency] = useState(false)
+    const [completed, setCompleted] = useState(false)
 
     useEffect( //filter tickets by emergencies
         () => {
@@ -22,7 +23,22 @@ export const TicketList = () => {
             else {
                 setFilteredTickets(tickets)
             }
-        }, [emergency])
+        }, [emergency]
+        )
+
+    useEffect( //filter tickets by completed
+        () => {
+            if (completed) {
+                const completedTickets = tickets.filter(ticket => {
+                    return ticket.userId === honeyUserObject.id && ticket.dateCompleted === ""
+                })
+                setFilteredTickets(completedTickets)
+            }
+            else {
+                setFilteredTickets(tickets)
+            }
+        }, [completed]
+        )
 
     useEffect( //fetch data from json-server
         () => {
@@ -42,16 +58,22 @@ export const TicketList = () => {
                 const userTickets = tickets.filter(ticket => ticket.userId === honeyUserObject.id)
                 setFilteredTickets(userTickets)
             }
-        }, [tickets])
+        }, [tickets]
+        )
     
     return <>
         {
             honeyUserObject.staff ?
-            <>
-                <button onClick={() => setEmergency(true)}>Emergencies Only</button>
-                <button onClick={() => setEmergency(false)}>All tickets</button>
-            </>
-                : <button onClick={() => navigate("/ticket/create")}>Create Ticket</button>
+                <>
+                    <button onClick={() => setEmergency(true)}>Emergencies Only</button>
+                    <button onClick={() => setEmergency(false)}>All tickets</button>
+                </>
+                :
+                <>
+                    <button onClick={() => navigate("/ticket/create")}>Create Ticket</button>
+                    <button onClick={() => setCompleted(true)}>My Open Tickets</button>
+                    <button onClick={() => setCompleted(false)}>All My Tickets</button>
+                </>
         }
         <h2>List of Tickets</h2>
         <article className="tickets">
