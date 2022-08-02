@@ -1,0 +1,14 @@
+.employees {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-top: 20px;
+}
+
+.employee {
+    background-color: blanchedalmond;
+    border: 1px dotted rgb(245, 188, 118);
+    margin: 10px 5px 0px 5px;
+    padding: .4rem;
+}
