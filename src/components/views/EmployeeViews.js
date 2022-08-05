@@ -2,6 +2,7 @@ import { Outlet, Route, Routes } from "react-router-dom"
 import { CustomerList } from "../nav/customers/CustomerList"
 import { EmployeeList } from "../employees/EmployeeList"
 import { TicketContainer } from "../tickets/TicketContainer"
+import { Profile } from "../profile/Profile"
 
 export const EmployeeViews = () => {
 	return (
@@ -16,8 +17,9 @@ export const EmployeeViews = () => {
             }>
 
                 <Route path="tickets" element={ <TicketContainer /> } />
-                <Route path="employees" element={ <EmployeeList/> } />
-                <Route path="customers" element={ <CustomerList/> } />
+                <Route path="employees" element={ <EmployeeList /> } />
+                <Route path="customers" element={ <CustomerList /> } />
+                <Route path="profile" element={ <Profile /> } />
             </Route>
         </Routes>
     )

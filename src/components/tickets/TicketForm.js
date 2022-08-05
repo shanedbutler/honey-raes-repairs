@@ -45,7 +45,7 @@ export const TicketForm = () => {
             },
             body: JSON.stringify(ticketToPost)
         }
-        return fetch (`http://localhost:8088/serviceTickets`, postOptions)
+        return fetch (`http://localhost:8099/serviceTickets`, postOptions)
         .then(response => response.json())
         .then(() => navigate("/tickets"))
     }

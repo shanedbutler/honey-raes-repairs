@@ -6,7 +6,7 @@ export const EmployeeList = () => {
     const [employees, setEmployees] = useState([])
 
     useEffect(() => {
-        fetch("http://localhost:8088/users?isStaff=true")
+        fetch("http://localhost:8099/users?isStaff=true")
          .then(response => response.json())
          .then(staffArray => setEmployees(staffArray))
          .catch(error => console.error(error))
