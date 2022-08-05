@@ -5,7 +5,7 @@ export const CustomerDetails = ({ customerObject }) => {
     const [customersDetails, setCustomersDetails] = useState([])
 
     useEffect(() => {
-        fetch("http://localhost:8088/customers")
+        fetch("http://localhost:8099/customers")
             .then(response => response.json())
             .then(detailsArray => setCustomersDetails(detailsArray))
     }, [])

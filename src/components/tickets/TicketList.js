@@ -47,7 +47,7 @@ export const TicketList = ({ searchTermState }) => {
 
     useEffect( //fetch data from json-server
         () => {
-            fetch(`http://localhost:8088/serviceTickets`)
+            fetch(`http://localhost:8099/serviceTickets`)
                 .then(response => response.json())
                 .then((ticketArray) => setTickets(ticketArray))
         }, []) // When this array is empty, you are observing initial component state
