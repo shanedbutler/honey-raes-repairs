@@ -3,6 +3,7 @@ import { CustomerList } from "../nav/customers/CustomerList"
 import { EmployeeList } from "../employees/EmployeeList"
 import { TicketContainer } from "../tickets/TicketContainer"
 import { Profile } from "../profile/Profile"
+import { TicketEdit } from "../tickets/TicketEdit"
 
 export const EmployeeViews = () => {
 	return (
@@ -17,6 +18,7 @@ export const EmployeeViews = () => {
             }>
 
                 <Route path="tickets" element={ <TicketContainer /> } />
+                <Route path="tickets/:ticketId/edit" element={ <TicketEdit /> } />
                 <Route path="employees" element={ <EmployeeList /> } />
                 <Route path="customers" element={ <CustomerList /> } />
                 <Route path="profile" element={ <Profile /> } />
