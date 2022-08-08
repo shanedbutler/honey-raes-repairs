@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import "./Tickets.css"
 
 export const TicketList = ({ searchTermState }) => {
@@ -8,7 +8,8 @@ export const TicketList = ({ searchTermState }) => {
     const honeyUserObject= JSON.parse(localHoneyUser)
 
     const navigate = useNavigate()
-
+    
+    
     const [tickets, setTickets] = useState([])
     const [filteredTickets, setFilteredTickets] = useState([])
     const [emergency, setEmergency] = useState(false)
@@ -85,7 +86,10 @@ export const TicketList = ({ searchTermState }) => {
             {
                 filteredTickets.map((ticket) => {
                     return <section className="ticket" key={ticket.id}>
-                        <header>{ticket.description}</header>
+                        <header>
+                            <Link to={`/tickets/${ticket.id}/edit`}>Ticket {ticket.id}</Link>
+                        </header>
+                        <section>{ticket.description}</section>
                         <footer>Emergency: {ticket.emergency ? "Yes" : "No"}</footer>
                     </section>
                 }
@@ -94,3 +98,10 @@ export const TicketList = ({ searchTermState }) => {
         </article>
     </>
 }
+
+
+{/* <header>
+    <Link to={`/tickets/${}/edit`}>Ticket {ticket.id}</Link>
+</header>
+<section>{ticket.description}</section>
+<footer>Emergency: {ticket.emergency ? "🧨" : "No"}</footer> */}
