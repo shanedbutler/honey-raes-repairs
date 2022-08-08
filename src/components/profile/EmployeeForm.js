@@ -61,7 +61,7 @@ export const EmployeeForm = ({ localUser }) => {
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    <label htmlFor="name">Hourly rate: </label>
+                    <label htmlFor="rate">Hourly rate: </label>
                     <input type="number"
                         className="form-control"
                         value={profile.rate}

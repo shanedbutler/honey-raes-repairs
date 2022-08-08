@@ -13,7 +13,6 @@ export const CustomerDetails = ({ customerObject }) => {
     return customersDetails.map((customerDetail => {
 
         if (customerObject.id === customerDetail.userId) {
-            console.log("hey")
             return (
                 <React.Fragment key={`customer--details${customerObject.id}`}>
                     <div>Address: {customerDetail.address}</div>
