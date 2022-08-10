@@ -70,7 +70,7 @@ export const TicketCard = ({ ticket, employees, localUser, getAllTickets }) => {
 
     return (
         <section className="ticket">
-            <header>
+            <header className="ticket-header">
                 {
                     localUser.staff
                         ? `Ticket ${ticket.id}`
