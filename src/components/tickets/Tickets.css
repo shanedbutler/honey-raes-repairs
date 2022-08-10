@@ -18,3 +18,9 @@
 .ticket-close--button {
     margin-left: 1rem;
 }
+
+.ticket-delete--button {
+    margin-top: .3rem;
+    background-color: rgb(175, 49, 49);
+    color: bisque;
+}

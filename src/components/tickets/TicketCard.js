@@ -66,7 +66,31 @@ export const TicketCard = ({ ticket, employees, localUser, getAllTickets }) => {
         else {
             return ""
         }
-    }                                      
+    }
+
+    const deleteTicket = () => {
+
+        if (!localUser.staff) {
+            fetch(`http://localhost:8099/serviceTickets/${ticket.id}`, {
+                method: "DELETE"
+            })
+                .then(getAllTickets)
+        }
+
+        else {
+            return ""
+        }
+    }
+
+    const deleteTicketButton = () => {
+        console.log(assignedEmployee?.userId)
+        if (!localUser.staff) {
+            return <button className="ticket-delete--button" onClick={deleteTicket}>Cancel</button>
+        }
+        else {
+            return ""
+        }
+    }
 
     return (
         <section className="ticket">
@@ -89,6 +113,11 @@ export const TicketCard = ({ ticket, employees, localUser, getAllTickets }) => {
                 {
                     closeTicketButton()
                 }
+                <div>
+                {
+                    deleteTicketButton()
+                }
+                </div>
             </footer>
         </section>
     )
