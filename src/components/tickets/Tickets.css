@@ -9,3 +9,18 @@
     padding: .7rem;
     margin: .5rem 0;
 }
+
+.ticket-header {
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.ticket-close--button {
+    margin-left: 1rem;
+}
+
+.ticket-delete--button {
+    margin-top: .3rem;
+    background-color: rgb(175, 49, 49);
+    color: bisque;
+}

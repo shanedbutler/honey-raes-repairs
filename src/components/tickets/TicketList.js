@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { TicketCard } from "./TicketCard"
 import "./Tickets.css"
 
 export const TicketList = ({ searchTermState }) => {
 
     const localHoneyUser = localStorage.getItem("honey_user")
-    const honeyUserObject= JSON.parse(localHoneyUser)
+    const honeyUserObject = JSON.parse(localHoneyUser)
 
     const navigate = useNavigate()
-    
-    
+
     const [tickets, setTickets] = useState([])
     const [filteredTickets, setFilteredTickets] = useState([])
+    const [employees, setEmployees] = useState([])
     const [emergency, setEmergency] = useState(false)
     const [completed, setCompleted] = useState(false)
 
@@ -30,7 +31,7 @@ export const TicketList = ({ searchTermState }) => {
                 setFilteredTickets(tickets)
             }
         }, [emergency]
-        )
+    )
 
     useEffect( //filter tickets by completed
         () => {
@@ -41,17 +42,35 @@ export const TicketList = ({ searchTermState }) => {
                 setFilteredTickets(completedTickets)
             }
             else {
-                setFilteredTickets(tickets)
+                if (honeyUserObject.staff) {
+                    //for employees to see all tickets
+                    setFilteredTickets(tickets)
+                }
+                else {
+                    //for customers to see only their tickets
+                    const userTickets = tickets.filter(ticket => ticket.userId === honeyUserObject.id)
+                    setFilteredTickets(userTickets)
+                }
             }
         }, [completed]
-        )
+    )
 
+    const getAllTickets = () => {
+        fetch(`http://localhost:8099/serviceTickets?_embed=employeeTickets`)
+            .then(response => response.json())
+            .then((ticketArray) => setTickets(ticketArray))
+    }
+    
     useEffect( //fetch data from json-server
         () => {
-            fetch(`http://localhost:8099/serviceTickets`)
+            getAllTickets()
+
+            fetch(`http://localhost:8099/employees?_expand=user`)
                 .then(response => response.json())
-                .then((ticketArray) => setTickets(ticketArray))
-        }, []) // When this array is empty, you are observing initial component state
+                .then((employeeArray) => setEmployees(employeeArray))
+        }, [])
+
+    // When this array is empty, you are observing initial component state
 
     useEffect( //check if user is employee & filter tickets for given user
         () => {
@@ -65,8 +84,8 @@ export const TicketList = ({ searchTermState }) => {
                 setFilteredTickets(userTickets)
             }
         }, [tickets]
-        )
-    
+    )
+
     return <>
         {
             honeyUserObject.staff ?
@@ -84,24 +103,13 @@ export const TicketList = ({ searchTermState }) => {
         <h2>List of Tickets</h2>
         <article className="tickets">
             {
-                filteredTickets.map((ticket) => {
-                    return <section className="ticket" key={ticket.id}>
-                        <header>
-                            <Link to={`/tickets/${ticket.id}/edit`}>Ticket {ticket.id}</Link>
-                        </header>
-                        <section>{ticket.description}</section>
-                        <footer>Emergency: {ticket.emergency ? "Yes" : "No"}</footer>
-                    </section>
-                }
-                )
+                filteredTickets.map((ticket) => <TicketCard
+                getAllTickets={getAllTickets} 
+                localUser={honeyUserObject} 
+                employees={employees} 
+                ticket={ticket} 
+                key={ticket.id} />)
             }
         </article>
     </>
 }
-
-
-{/* <header>
-    <Link to={`/tickets/${}/edit`}>Ticket {ticket.id}</Link>
-</header>
-<section>{ticket.description}</section>
-<footer>Emergency: {ticket.emergency ? "🧨" : "No"}</footer> */}
