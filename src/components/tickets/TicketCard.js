@@ -61,7 +61,7 @@ export const TicketCard = ({ ticket, employees, localUser, getAllTickets }) => {
     const closeTicketButton = () => {
         console.log(assignedEmployee?.userId)
         if (localUser.id === assignedEmployee?.userId && ticket.dateCompleted === "") {
-            return <button onClick={closeTicket}>Close</button>
+            return <button className="ticket-close--button" onClick={closeTicket}>Close</button>
         }
         else {
             return ""
