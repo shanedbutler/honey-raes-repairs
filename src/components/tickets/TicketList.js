@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { getEmployees, getServiceTickets } from "../ApiManager"
 import { TicketCard } from "./TicketCard"
 import "./Tickets.css"
 
@@ -56,7 +57,7 @@ export const TicketList = ({ searchTermState }) => {
     )
 
     const getAllTickets = () => {
-        fetch(`http://localhost:8099/serviceTickets?_embed=employeeTickets`)
+        getServiceTickets(`?_embed=employeeTickets`)
             .then(response => response.json())
             .then((ticketArray) => setTickets(ticketArray))
     }
@@ -65,7 +66,7 @@ export const TicketList = ({ searchTermState }) => {
         () => {
             getAllTickets()
 
-            fetch(`http://localhost:8099/employees?_expand=user`)
+            getEmployees(`?_expand=user`)
                 .then(response => response.json())
                 .then((employeeArray) => setEmployees(employeeArray))
         }, [])
