@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react"
+import { getCustomers } from "../ApiManager"
 
 export const CustomerDetails = ({ customerObject }) => {
 
     const [customersDetails, setCustomersDetails] = useState([])
 
     useEffect(() => {
-        fetch("http://localhost:8099/customers")
+        getCustomers()
             .then(response => response.json())
             .then(detailsArray => setCustomersDetails(detailsArray))
     }, [])

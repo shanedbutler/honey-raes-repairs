@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { getEmployees } from "../ApiManager"
 
 export const EmployeeForm = ({ localUser }) => {
 
@@ -14,7 +15,7 @@ export const EmployeeForm = ({ localUser }) => {
 
     // Get employees profile info from API and update state
     useEffect(() => {
-        fetch(`http://localhost:8099/employees?userId=${localUser.id}`)
+        getEmployees(`?userId=${localUser.id}`)
          .then(response => response.json())
          .then(employeeArray => setProfile(employeeArray[0]) ) //set to 1st (only) object in array
         
@@ -23,17 +24,18 @@ export const EmployeeForm = ({ localUser }) => {
     const handleSaveButtonClick = (event) => {
         event.preventDefault()
 
+        const putOptions = {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(profile)
+        }
         /* 
             The PUT fetch() call here to update the profile.
             Navigate user to home page when done.
         */
-            fetch("http://localhost:8099/employees", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(profile)
-            })
+            getEmployees(`/${profile.id}`, putOptions)
                 .then(() => navigate("/"))
         }
     

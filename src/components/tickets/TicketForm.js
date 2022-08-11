@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { getServiceTickets } from "../ApiManager"
 
 export const TicketForm = () => {
     /*
@@ -45,7 +46,7 @@ export const TicketForm = () => {
             },
             body: JSON.stringify(ticketToPost)
         }
-        return fetch (`http://localhost:8099/serviceTickets`, postOptions)
+        getServiceTickets("", postOptions)
         .then(response => response.json())
         .then(() => navigate("/tickets"))
     }

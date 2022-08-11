@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import { getEmployeeTickets, getServiceTickets } from "../ApiManager"
 
 export const TicketCard = ({ ticket, employees, localUser, getAllTickets }) => {
 
@@ -10,13 +11,13 @@ export const TicketCard = ({ ticket, employees, localUser, getAllTickets }) => {
         assignedEmployee = employees.find(employee => employee.id === employeeTicketObject.employeeId)
     }
 
+    // Find the employee object for the current user
+    const currentEmployee = employees.find(employee => localUser.id === employee.userId)
+
     const claimTicket = (event) => {
         event.preventDefault()
 
-        // Find the employee object for the current user
-        const currentEmployee = employees.find(employee => localUser.id === employee.userId)
-
-        fetch("http://localhost:8099/employeeTickets", {
+        const postOptions = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -25,7 +26,9 @@ export const TicketCard = ({ ticket, employees, localUser, getAllTickets }) => {
                 employeeId: currentEmployee.id,
                 serviceTicketId: ticket.id
             })
-        })
+        }
+
+        getEmployeeTickets("", postOptions)
             .then(getAllTickets)
 
     }
@@ -47,19 +50,21 @@ export const TicketCard = ({ ticket, employees, localUser, getAllTickets }) => {
         // Remove the the expanded property
         delete ticketCopy.employeeTickets
         ticketCopy.dateCompleted = new Date()
-
-        fetch(`http://localhost:8099/employeeTickets/${ticket.id}`, {
+        
+        const putOptions = {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(ticketCopy)
-        })
+        }
+
+        getServiceTickets(`/${ticket.id}`, putOptions)
             .then(getAllTickets)
     }
 
     const closeTicketButton = () => {
-        console.log(assignedEmployee?.userId)
+
         if (localUser.id === assignedEmployee?.userId && ticket.dateCompleted === "") {
             return <button className="ticket-close--button" onClick={closeTicket}>Close</button>
         }
@@ -70,10 +75,10 @@ export const TicketCard = ({ ticket, employees, localUser, getAllTickets }) => {
 
     const deleteTicket = () => {
 
+        const deleteOptions = {method: "DELETE"}
+
         if (!localUser.staff) {
-            fetch(`http://localhost:8099/serviceTickets/${ticket.id}`, {
-                method: "DELETE"
-            })
+            getServiceTickets(`/${ticket.id}`, deleteOptions)
                 .then(getAllTickets)
         }
 
@@ -83,7 +88,7 @@ export const TicketCard = ({ ticket, employees, localUser, getAllTickets }) => {
     }
 
     const deleteTicketButton = () => {
-        console.log(assignedEmployee?.userId)
+
         if (!localUser.staff) {
             return <button className="ticket-delete--button" onClick={deleteTicket}>Cancel</button>
         }
@@ -114,9 +119,9 @@ export const TicketCard = ({ ticket, employees, localUser, getAllTickets }) => {
                     closeTicketButton()
                 }
                 <div>
-                {
-                    deleteTicketButton()
-                }
+                    {
+                        deleteTicketButton()
+                    }
                 </div>
             </footer>
         </section>

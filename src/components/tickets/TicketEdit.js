@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { getServiceTickets } from "../ApiManager"
 
 export const TicketEdit = () => {
     // TODO: This state object should not be blank
@@ -13,10 +14,10 @@ export const TicketEdit = () => {
 
     const navigate = useNavigate()
 
-    // Get the ticket state from the API.
+    // Get the service ticket state from the API.
     useEffect(() => {
 
-        fetch(`http://localhost:8099/serviceTickets/${ticketId}`)
+        getServiceTickets(`/${ticketId}`)
             .then(response => response.json())
             .then(ticketObject => setTicket(ticketObject))
 
@@ -35,7 +36,7 @@ export const TicketEdit = () => {
         }
 
         //Fetch for the PUT request to replace the object being edited
-        fetch(`http://localhost:8099/serviceTickets/${ticketId}`, putOptions)
+        getServiceTickets(`/${ticketId}`, putOptions)
             .then(() => navigate("/tickets"))
 
     }

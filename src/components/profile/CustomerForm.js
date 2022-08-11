@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { getCustomers } from "../ApiManager"
 
 export const CustomerForm = ({ localUser }) => {
 
@@ -14,7 +15,7 @@ export const CustomerForm = ({ localUser }) => {
 
     // Get customers profile info from API and update state
     useEffect(() => {
-        fetch(`http://localhost:8099/customers?userId=${localUser.id}`)
+        getCustomers(`?userId=${localUser.id}`)
          .then(response => response.json())
          .then(customerArray => setProfile(customerArray[0]) ) //set to 1st (only) object in array
         
@@ -23,17 +24,19 @@ export const CustomerForm = ({ localUser }) => {
     const handleSaveButtonClick = (event) => {
         event.preventDefault()
 
+        const putOptions = {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(profile)
+        }
+
         /* fetch call and nav back to products
             The PUT fetch() call here to update the profile.
             Navigate user to home page when done.
         */
-            fetch(`http://localhost:8099/customers/${profile.id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(profile)
-            })
+            getCustomers(`/${profile.id}`, putOptions)
                 .then(() => navigate("/"))
         }
     
